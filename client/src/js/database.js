@@ -16,10 +16,11 @@ const initdb = async () =>
 
   // Add text to indexedDB
 export const putDb = async (content) => {
+	console.log('Hello World');
 	const jateDB = await openDB('jate', 1);
 	const tx = jateDB.transaction('jate', 'readwrite');
 	const store = tx.objectStore('jate');
-	const request = store.put({ id: 1, value: content });
+	const request = store.add({ jate: content });
 	const result = await request;
 	console.log(result);
 };
@@ -28,12 +29,14 @@ export const putDb = async (content) => {
 // TODO: Add logic for a method that gets all the content from the database
 
 // Retrieve text from indexedDB
-export const getDb = async (e) => {
+export const getALLDb = async (e) => {
+	console.log("Get all DB")
 	const jateDb = await openDB('jate', 1);
 	const tx = jateDb.transaction('jate', 'readonly');
 	const store = tx.objectStore('jate');
-	const request = store.get(1);
+	const request = store.getAllDb();
 	const result = await request;
-	return result?.value;
+	console.log('result.value', result);
+	return result;
 };
 initdb();

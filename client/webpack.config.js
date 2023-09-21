@@ -23,7 +23,7 @@ module.exports = () => {
 // WebpackPwaManifest for generating the manifest file
       new WebpackPwaManifest({
         
-        name: 'JATE',
+        name: 'Just Another Text Editor',
         short_name: 'JATE',
         description: 'A text editor that runs in the browser.',
         background_color: '#ffffff',

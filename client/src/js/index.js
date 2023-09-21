@@ -1,7 +1,8 @@
 import { Workbox } from 'workbox-window';
 import Editor from './editor';
-import './database';
+import './database.js';
 import '../css/style.css';
+import { header } from './header.js';
 
 const main = document.querySelector('#main');
 main.innerHTML = '';
@@ -24,11 +25,12 @@ if (typeof editor === 'undefined') {
 }
 
 // Check if service workers are supported
+export const registerSW = () => {
+  // Check that service workers are supported
 if ('serviceWorker' in navigator) {
-  // register workbox service worker
-  const workboxSW = new Workbox('/service-worker.js');
-  workboxSW.register();
-  console.log('SW registered');
-} else {
-  console.error('Service workers are not supported in this browser.');
-}
+    // Use the window load event to keep the page load performant
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js');
+    });
+  }
+};
