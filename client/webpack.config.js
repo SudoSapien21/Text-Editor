@@ -9,6 +9,7 @@ module.exports = () => {
     entry: {
       main: './src/js/index.js',
       install: './src/js/install.js',
+      cards: './src/js/editor.js'
     },
     output: {
       filename: '[name].bundle.js',
@@ -22,6 +23,13 @@ module.exports = () => {
         chunks: ['main'], // Include the 'main' entry chunk
       }),
 
+
+        new InjectManifest({
+                swSrc: './src-sw.js',
+                swDest: 'src-sw.js',
+              }),
+
+
       // WebpackPwaManifest for generating the manifest file
       new WebpackPwaManifest({
         name: 'Your Text Editor App',
@@ -31,17 +39,15 @@ module.exports = () => {
         theme_color: '#000000',
         icons: [
           {
-            src: path.resolve('src/images/icon.png'), 
+            src: path.resolve('src/images/logo.png'), 
             sizes: [96, 128, 192, 256, 384, 512], 
+            destination: path.join('assets','icons'),
           },
         ],
       }),
 
       
-      new InjectManifest({
-        swSrc: './src/service-worker.js', 
-        swDest: 'service-worker.js', 
-      }),
+     
     ],
 
     module: {
