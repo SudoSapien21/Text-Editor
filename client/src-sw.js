@@ -29,8 +29,8 @@ registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 // Set up asset cache
 registerRoute(
   // Define the callback function to filter the requests to cache (e.g., JS, CSS, and worker files)
-  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
-  new StaleWhileRevalidate({
+  ({ request }) => request.destination === 'image',
+  new CatchFirst({
     // Name of the cache storage.
     cacheName: 'asset-cache',
     plugins: [
@@ -39,7 +39,8 @@ registerRoute(
         statuses: [0, 200],
       }),
       new ExpirationPlugin({
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, 
       }),
     ],
   })

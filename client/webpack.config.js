@@ -8,8 +8,7 @@ module.exports = () => {
     mode: 'development',
     entry: {
       main: './src/js/index.js',
-      install: './src/js/install.js',
-      cards: './src/js/editor.js'
+      install: './src/js/install.js',  
     },
     output: {
       filename: '[name].bundle.js',
@@ -19,24 +18,20 @@ module.exports = () => {
       // HtmlWebpackPlugin for generating HTML files
       new HtmlWebpackPlugin({
         template: './src/index.html', // Specify your HTML template file
-        filename: 'index.html', // Output filename
-        chunks: ['main'], // Include the 'main' entry chunk
+      
       }),
-
-
-        new InjectManifest({
-                swSrc: './src-sw.js',
-                swDest: 'src-sw.js',
-              }),
-
-
-      // WebpackPwaManifest for generating the manifest file
+// WebpackPwaManifest for generating the manifest file
       new WebpackPwaManifest({
-        name: 'Your Text Editor App',
-        short_name: 'Text Editor',
+        
+        name: 'JATE',
+        short_name: 'JATE',
         description: 'A text editor that runs in the browser.',
         background_color: '#ffffff',
         theme_color: '#000000',
+        start_url: '/',
+				publicPath: '/',
+        fingerprints: false,
+        inject: true,
         icons: [
           {
             src: path.resolve('src/images/logo.png'), 
@@ -45,6 +40,11 @@ module.exports = () => {
           },
         ],
       }),
+
+        new InjectManifest({
+                swSrc: './src-sw.js',
+                swDest: 'service-worker.js',
+              }),  
 
       
      
@@ -66,6 +66,7 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             },
           },
         },

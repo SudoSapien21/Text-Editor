@@ -10,38 +10,30 @@ const initdb = async () =>
       db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
       console.log('jate database created');
     },
-  });// similar to this 
+  });// similar to this
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
-  export const putDb = async (content) => {
-  console.log('Post to the database');
 
-  const contactDb = await openDB('jate', 1);
-  const tx = contactDb.transaction('jate', 'readwrite');
-  const store = tx.objectStore('jate');
-  
-  // Create an object to store in the database
-  const data = { content, timestamp: Date.now() };
-  
-  // Add the data to the object store
-  const id = await store.add(data);
-  
-  await tx.complete;
-  
-  console.log(`Added content with ID ${id} to the database`);
-}; 
+  // Add text to indexedDB
+export const putDb = async (content) => {
+	const jateDB = await openDB('jate', 1);
+	const tx = jateDB.transaction('jate', 'readwrite');
+	const store = tx.objectStore('jate');
+	const request = store.put({ id: 1, value: content });
+	const result = await request;
+	console.log(result);
+};
+
 
 // TODO: Add logic for a method that gets all the content from the database
-export const getDb = async () => {  
-  console.log('GET from the database');
-  const tx = contactDb.transaction('jate', 'readonly');
-  const store = tx.objectStore('jate');
-  
-  // Get all records from the object store
-  const records = await store.getAll();
-  
-  await tx.complete;
-  
-  return records;
+
+// Retrieve text from indexedDB
+export const getDb = async (e) => {
+	const jateDb = await openDB('jate', 1);
+	const tx = jateDb.transaction('jate', 'readonly');
+	const store = tx.objectStore('jate');
+	const request = store.get(1);
+	const result = await request;
+	return result?.value;
 };
 initdb();
